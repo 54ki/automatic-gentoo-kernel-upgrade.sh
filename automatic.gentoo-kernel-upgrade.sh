@@ -1,5 +1,5 @@
 #!/bin/sh
-KERNEL_DIRECTORY="/usr/src/"
+KERNEL_DIRECTORY="/usr/src"
 CURRENT_KERNEL_VERSION=$(uname -r | sed -e 's/-.*//g')
 LATEST_KERNEL_VERSION=$(find $KERNEL_DIRECTORY -maxdepth 1 -type d -iname "linux-*" | sed -e 's/[[:alpha:]]//g' -e 's/[][/-]//g' | sort -rV | head -n 1)
 
@@ -10,7 +10,7 @@ _install() {
 	LATEST_KERNEL_DIRECTORY=$(find "$KERNEL_DIRECTORY" -maxdepth 1 -type d -iname "*$LATEST_KERNEL_VERSION*")
 	CURRENT_KERNEL_DIRECTORY=$(find "$KERNEL_DIRECTORY" -maxdepth 1 -type d -iname "*$CURRENT_KERNEL_VERSION*")
 	ln -nsf "$LATEST_KERNEL_DIRECTORY" "$KERNEL_DIRECTORY"/linux
-	cd "$KERNEL_DIRECTORY"linux || exit 2
+	cd "$KERNEL_DIRECTORY"/linux || exit 2
 	cp "$CURRENT_KERNEL_DIRECTORY"/.config .
 	make oldconfig # replace this with olddefconfig if you don't want to interactively configure the kernel
 	echo "Building new kernel..."
@@ -19,7 +19,7 @@ _install() {
 	emerge -qv @module-rebuild
 	echo "Adding latest kernel to EFI boot entry..."
 	KERNEL_FILE=$(find /boot -maxdepth 1 -type f -iname "vmlinuz*$LATEST_KERNEL_VERSION*" -printf "%P\n"| grep -v '.old')
-	LABEL_NAME=$( echo "$KERNEL_FILE" | sed 's/vmlinuz-/Gentoo\ /')
+	LABEL_NAME=$(echo "$KERNEL_FILE" | sed 's/vmlinuz-/Gentoo\ /')
 	##########################################################
 	## CHANGE THE NEXT LINE FOR YOUR SPECIFIC CONFIGURATION ##
 	##########################################################
