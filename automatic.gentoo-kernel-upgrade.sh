@@ -6,7 +6,7 @@ LATEST_KERNEL_VERSION=$(find $KERNEL_DIRECTORY -maxdepth 1 -type d -iname "linux
 _install() {
 	echo "New kernel version found. Press ENTER to install or Ctrl+C to cancel."
 	read -r line
-	echo "Continuing..."
+	[ id -u -eq 0 ] && echo "Continuing..." || { echo "This script needs to be run as root."; exit 3; }
 	LATEST_KERNEL_DIRECTORY=$(find "$KERNEL_DIRECTORY" -maxdepth 1 -type d -iname "*$LATEST_KERNEL_VERSION*")
 	CURRENT_KERNEL_DIRECTORY=$(find "$KERNEL_DIRECTORY" -maxdepth 1 -type d -iname "*$CURRENT_KERNEL_VERSION*")
 	ln -nsf "$LATEST_KERNEL_DIRECTORY" "$KERNEL_DIRECTORY"/linux

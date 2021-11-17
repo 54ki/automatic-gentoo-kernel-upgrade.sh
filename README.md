@@ -1,5 +1,5 @@
 # automatic-gentoo-kernel-upgrade.sh
-__NOTE:__ This script was written for the author's specific use case. More specifically, __it uses EFISTUB and `efibootmgr`__ in order to add the kernel directly as an EFI boot entry.
+__NOTE:__ This script was written specifically for __EFISTUB and `efibootmgr`__ in order to add the kernel directly as an EFI boot entry.
 Outside of that this script should work across all Gentoo systems; just make sure to apply your own bootloader changes, if any.
 
 This script was written in order to automate the Gentoo kernel upgrade process after I noticed that I kept running the same commands everytime.
