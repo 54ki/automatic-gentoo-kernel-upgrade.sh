@@ -18,7 +18,9 @@ _install() {
 	cp "$CURRENT_KERNEL_DIRECTORY"/.config .
 	make oldconfig # replace this with olddefconfig if you don't want to interactively configure the kernel
 	echo "Building new kernel..."
-	make -j8; make modules_prepare; make modules_install; make install
+	make -j8; make modules_prepare; make modules_install;
+	grep -qs '/boot' /proc/mounts || { echo "Mounting /boot..."; mount /boot; } # check if /boot is mounted, mount it if it's not
+	make install;
 	echo "Installing extra modules from portage..."
 	emerge -qv @module-rebuild
 	echo "Adding latest kernel to EFI boot entry..."
@@ -35,5 +37,5 @@ if [ "$LATEST_KERNEL_VERSION" = "$CURRENT_KERNEL_VERSION" ]; then
 	echo "Latest kernel already installed. Exiting..."
 	exit 1;
 else
-	_install && echo "Kernel installation complete! You may reboot to load the new kernel."
+	_install && echo "Kernel installation complete! You may reboot to load the new kernel.";
 fi
